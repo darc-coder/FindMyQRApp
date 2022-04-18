@@ -9,7 +9,7 @@
 
 [The Project itself is a Installable Progressive Web App.](https://findmyqr.netlify.app/ "FindMyQR App")
 
-###### Thanks for Trying! Make sure to `star` this if you find this idea or project useful.
+#### Thanks for Trying! Make sure to `star` this if you find this idea or project useful.
 
 [^note]:
 Note: The Backend has to be created to support the backend and database storage.
