@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR</title>
+    <link rel="stylesheet" href="../css/qrScanner.css">
+    <script src="../js/qr-scanner.min.js"></script>
+</head>
+
+<body>
+    <video id="video" disablepictureinpicture playsinline></video>
+    <div class="container">
+        <div class="items top-items">
+            <div class="flash">
+                <span class="material-icons-outlined flash-icon small">
+                    flash_off
+                </span>
+            </div>
+            <div class="invert">
+                <span class="material-icons-outlined invert-icon small">
+                    compare
+                </span>
+            </div>
+            <div class="region">
+                <span class="material-icons-outlined region-icon small active">
+                    fullscreen
+                </span>
+                <div class="canvas-container"></div>
+            </div>
+
+        </div>
+        <div class="items bottom-items">
+            <div class="scan-from-file">
+                <span class="material-icons-outlined scan-file-icon">
+                    add_photo_alternate
+                </span>
+                <input type="file" id="file-selector">
+            </div>
+            <div class="start-stop">
+                <span class="record">
+                    <span class="inner-icon"></span>
+                </span>
+                <!-- <button id="start-button">Start</button>
+                <button id="stop-button">Stop</button> -->
+            </div>
+            <div class="camera-list">
+                <select id="cam-list">
+                    <option value="environment" selected="">Environment Facing (default)</option>
+                    <option value="user">User Facing</option>
+                </select>
+                <span class="material-icons-outlined cameraswitch">
+                    cameraswitch
+                </span>
+            </div>
+        </div>
+
+        <div class="dialog close">
+            <div class="top-head">
+                <span class="cross"></span>
+            </div>
+            <div class="error-box"></div>
+            <div class="qr-result">No QR Detected</div>
+            <div class="last-qr">
+                <a>
+                    <span class="text">link</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    QrScanner.WORKER_PATH = '../js/qr-scanner-worker.min.js';
+
+    const video = document.querySelector('video');
+
+    // top row items
+    const flash = document.querySelector('.flash');
+    const invert = document.querySelector('.invert');
+    const region = document.querySelector('.region');
+    const canvas = document.querySelector('.canvas-container');
+    const close = document.querySelector('.cross');
+
+    function toggleIcon(icon, data1, data2) {
+        if (icon.innerText == data1)
+            icon.innerText = data2;
+        else
+            icon.innerText = data1;
+
+        if (icon.innerText.includes("_on"))
+            icon.classList.add('active');
+        else
+            icon.classList.remove('active');
+    }
+
+    flash.onclick = () => {
+        toggleIcon(flash.querySelector('.flash-icon'), 'flash_on', 'flash_off');
+        scanner.toggleFlash().then(() => {
+            if (scanner.isFlashOn())
+                toggleIcon(flash.querySelector('.flash-icon'), 'flash_on', 'flash_on');
+            else
+                toggleIcon(flash.querySelector('.flash-icon'), 'flash_off', 'flash_off');
+        });
+    }
+
+    invert.onclick = () => {
+        let invertIcon = invert.querySelector('.invert-icon');
+        invertIcon.classList.toggle('active');
+
+        if (invertIcon.classList.contains('active')) {
+            scanner.setInversionMode('both');
+        }
+        else
+            scanner.setInversionMode('original');
+    }
+
+    region.onclick = () => {
+        let regionIcon = region.querySelector('.region-icon');
+        regionIcon.classList.toggle('active');
+
+        if (regionIcon.classList.contains('active')) {
+            // scanner.setRegionOfInterest(scanner.getRegionOfInterest());
+        }
+    }
+
+    // bottom row items
+    const scanFromFile = document.querySelector('.scan-from-file');
+    const fileSelector = document.querySelector('#file-selector');
+    const QrResult = document.querySelector('.qr-result');
+    const lastQR = document.querySelector('.last-qr');
+    const errorQR = document.querySelector('.error-box');
+    const record = document.querySelector('.record');
+    const camera = document.querySelector('.cameraswitch');
+
+    scanFromFile.onclick = () => {
+        fileSelector.click();
+    }
+
+    fileSelector.addEventListener('change', event => {
+        const file = fileSelector.files[0];
+        if (!file) {
+            return;
+        }
+        QrScanner.scanImage(file)
+            .then(result => showResult(QrResult, result))
+            .catch(e => showResult(QrResult, e || 'No QR code found.'));
+    });
+
+    function showResult(element, result) {
+        document.querySelector('.dialog').classList.remove('close');
+        element.innerText = result;
+        let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+        let regex = new RegExp(expression);
+        let matches = result.match(regex);
+        if (matches) {
+            if (new URL(matches[0]).origin == location.origin)
+                lastQR.innerHTML = `<a href="${matches[0]}"><span class="text">${matches[0]}</span></a>`;
+            else
+                lastQR.innerHTML = `<a href="${matches[0]}" target="_blank"><span class="text">${matches[0]}</span></a>`;
+        }
+        else
+            lastQR.innerHTML = `<a><span class="text">no links found</span></a>`;
+
+        close.onclick = () => {
+            document.querySelector('.dialog').classList.add('close');
+        }
+    }
+
+    // start/stop recording
+    record.onclick = () => {
+        record.classList.toggle('stop');
+        if (record.classList.contains('stop'))
+            scanner.start();
+        else
+            scanner.stop();
+    }
+
+    // camera switch
+    camera.onclick = () => {
+        camera.classList.toggle('secondary');
+        if (camera.classList.contains('secondary'))
+            scanner.setCamera('user');
+        else
+            scanner.setCamera('environment');
+    }
+
+    const scanner = new QrScanner(video, result => showResult(QrResult, result), error => {
+        if (error != "No QR code found")
+            errorQR.innerText = error;
+    });
+
+    scanner.start().then(() => {
+        record.click();
+        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => console.log(camera))
+        );
+        canvas.appendChild(scanner.$canvas);
+    });
+</script>
+
+</html>

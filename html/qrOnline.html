@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online QR Code Generator</title>
+    <link rel="stylesheet" href="../css/extrastyle.css">
+    <script src="../js/db.js"></script>
+    <script src="../js/qrtool.min.js"></script>
+    <script src="../js/qronline.js" defer></script>
+</head>
+
+<body>
+    <blockquote class="blockquote blockquote-reverse">
+        <p>Online QR Code Generator</p>
+        <footer class="blockquote-footer">Thanks for Trying!</footer>
+    </blockquote>
+    <div class="rounded-0">
+        <div class="row card-body justify-content-center">
+            <div class="col-sm-6">
+                <h5>Proceed to Generate Online QR Code</h5>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="card-title">
+                            Input <code>URL</code>
+                            or <code>Text</code>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea id="qr_data" autofocus spellcheck class="form-control input-xs rounded-0"
+                            name="qr_data" maxlength="2000" placeholder="Enter Text for QR">nitz</textarea>
+                        <input type="text" id="textAreaLength">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <div id="qrimage"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-0 w-100"
+                            onclick="Generate()">Generate</button>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <button id="exportImageQRCodeOutputBtn" type="button"
+                            class="btn btn-outline-info btn-sm rounded-0 w-100">Export</button>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

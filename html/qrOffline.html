@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>Offline QR Code Generator</title>
+    <link rel="stylesheet" href="../css/extrastyle.css">
+    <script src="../js/qrtool.min.js"></script>
+</head>
+
+<body>
+    <blockquote class="blockquote blockquote-reverse">
+        <p>Offline QR Code Generator</p>
+        <footer class="blockquote-footer">
+            Adapted from <a href="https://webqr.com/" target="blank">here</a>
+        </footer>
+    </blockquote>
+    <div class="rounded-0">
+        <div class="row card-body justify-content-center">
+            <div class="col-sm-6">
+                <h5>Proceed to Generate Offline QR Code</h5>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="card-title">
+                            Input <code>URL</code>
+                            or <code>Text</code>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea id="qr_data" autofocus spellcheck class="form-control input-xs rounded-0"
+                            name="qr_data" maxlength="180" placeholder="Enter Text for QR">nitz</textarea>
+                        <input type="text" id="textAreaLength">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <div id="qrimage"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-0 w-100"
+                            onclick="create()">Generate</button>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <button id="exportImageQRCodeOutputBtn" type="button"
+                            class="btn btn-outline-info btn-sm rounded-0 w-100">Export</button>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let qrImageContainer = document.getElementById("qrimage")
+            , exportQRImageBtn = document.getElementById("exportImageQRCodeOutputBtn")
+            , qrDataInput = document.getElementById("qr_data")
+            , textAreaLength = document.querySelector("#textAreaLength")
+            , qrHeight = 256
+            , qrWidth = 256
+            , qrimage = new QRCode("qrimage", {
+                text: document.getElementById("qr_data").value,
+                width: qrWidth,
+                height: qrHeight,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        qrDataInput.oninput = (ev) => {
+            textAreaLength.value = qrDataInput.textLength + "/" + qrDataInput.maxLength
+        }
+        function create() {
+            qrimage.makeCode(qrDataInput.value)
+        }
+        qrimage.clear(),
+            qrimage.makeCode(qrDataInput.value),
+            exportQRImageBtn.onclick = function (e) {
+                var t = qrImageContainer.getElementsByTagName("img")[0].src;
+                if (window.Blob) {
+                    let e = document.createElement("a");
+                    e.download = "qr_code.png",
+                        e.innerHTML = "Download File",
+                        e.href = t,
+                        e.style.display = "none",
+                        document.body.appendChild(e),
+                        e.click(),
+                        document.body.removeChild(e)
+                } else
+                    alert("Your browser does not support HTML5 'Blob' function required to save a file.")
+            }
+            ;
+        let qr_data = document.querySelector("textarea");
+        qr_data.style.height = qr_data.scrollHeight + "px";
+        qr_data.addEventListener("input", OnInput, false);
+
+        function OnInput() {
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+            this.style.overflow = "hidden";
+        }
+    </script>
+</body>
+
+</html>

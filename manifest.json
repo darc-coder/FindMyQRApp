@@ -1,0 +1,22 @@
+{
+    "name": "Find MY QR",
+    "short_name": "Find MY QR",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#FFE9D2",
+    "theme_color": "#FFE1C4",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/resources/icons/192px.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/resources/icons/512px.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}

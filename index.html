@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#C5CAE9">
+    <title>Find MY QR Client</title>
+    <!-- <link rel="stylesheet" href="extrastyle.css"> -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbars.css">
+    <script defer src="js/script.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="/resources/icons/192px.png">
+</head>
+
+<body class="light">
+    <nav class="top-bar">
+        <span class="icon">
+            <a href="/">
+                <img src="resources/FindMyQRLogo.png" alt="Find MY QR Icon" />
+            </a>
+        </span>
+
+        <span class="title"><a href="/">Find MY QR</a></span>
+
+        <span class="hamburger close">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </nav>
+    <nav class="side-bar close">
+        <div class="user-info">
+            <span class="user-img">
+                <img src="resources/user.png" alt="user image logo">
+            </span>
+            <span class="user-name">{user.name}</span>
+        </div>
+
+        <div class="login">
+            <a href="./html/login.html"><button>Login</button></a>
+        </div>
+
+        <div class="links">
+            <ul>
+                <li>How it Works</li>
+                <li>About Us</li>
+                <li>Contact Us</li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="top-carousel">
+            <h1>Your lost items, got found</h1>
+            <h2>I Would like to...</h2>
+        </div>
+
+        <div class="main-area">
+            <div class="card generateQR">
+                <a href="#">Generate a QR</a>
+            </div>
+            <a href="./html/qrScanner.html">
+                <div class="card scanQR">
+                    Scan a QR
+                </div>
+            </a>
+
+        </div>
+        <div class="fullscreen box hidden">
+            <div class="cross">
+                <span></span>
+                <span></span>
+            </div>
+            <a href="./html/qrOffline.html">
+                <div class="card offlineQR">
+                    <h2>Offline QR</h2>
+                    <ul class="choose-QR-type">
+                        <li>Best for storing small text</li>
+                        <li>Works Without Internet</li>
+                        <li>Max 180 character</li>
+                    </ul>
+                </div>
+            </a>
+            <a href="./html/qrOnline.html">
+                <div class="card onlineQR">
+                    <h2>Online QR</h2>
+                    <ul class="choose-QR-type">
+                        <li>Best for storing large text</li>
+                        <li>Requires Internet</li>
+                        <li>Max 2000 character</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <!-- container end -->
+
+
+    <footer>
+        created by Nitin
+    </footer>
+</body>
+
+</html>
