@@ -14,6 +14,7 @@ const assets = [
     '/resources/MaterialIcons-Regular.ttf',
     '/resources/MaterialIconsOutlined-Regular.otf',
     '/resources/bg.jpg',
+    '/resources/astronaut.png',
     '/resources/FindMyQRLogo.png',
     '/html/fallback.html'
 ];
